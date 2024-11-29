@@ -22,7 +22,7 @@
             </div>
             <div class="actions">
                 <button v-show="currentPage === 'browse'" v-on:click="currentPage = 'checkout'"
-                    :disabled="order.products.length === 0">🛒 Checkout <span class="badge">{{ order.products.length
+                    :disabled="order.products.length === 0">🛒 Checkout <span class="badge" v-show="order.products.length > 0">{{ order.products.length
                         }}</span></button>
                 <button v-show="currentPage === 'checkout'" v-on:click="currentPage = 'browse'">🌐 Browse</button>
             </div>
@@ -84,8 +84,8 @@
                                     Number(product.price)).toLocaleString() }}</div>
                             </div>
                             <div class="flex">
-                                <button v-on:click="decreaseProductQty(product)" class="px-2 rounded-s bg-gray-100" :disabled="cartProductCount(product.id) === 0">-</button>
-                                <button v-on:click="increaseProductQty(product)" class="px-2 rounded-e bg-gray-100" :disabled="product.inventory - cartProductCount(product.id) === 0">+</button>
+                                <button v-on:click="decreaseProductQty(product)" class="px-2 rounded-s bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300" :disabled="cartProductCount(product.id) === 1">-</button>
+                                <button v-on:click="increaseProductQty(product)" class="px-2 rounded-e bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300" :disabled="product.inventory - cartProductCount(product.id) === 0">+</button>
                                 <button v-on:click="removeFromCart(product)"
                                     class="btn-danger-muted text-xs ml-2">Remove</button>
                             </div>

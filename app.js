@@ -1,6 +1,8 @@
 const webstore = new Vue({
     el: '#app',
     data: {
+        baseUrl: 'http://localhost:3000',
+        backendRoutes: { productList: 'product', placeOrder: 'order' },
         sitename: 'PetDepot',
         currentPage: 'browse',
         filter: '',
@@ -8,7 +10,7 @@ const webstore = new Vue({
         order: {
             sendGift: 'Send As A Gift',
             dontSendGift: 'Don\'t Send As A Gift',
-            
+
             products: [],
             firstName: '',
             lastName: '',
@@ -28,10 +30,10 @@ const webstore = new Vue({
         },
     },
     methods: {
-        addToCart: function(product) {
+        addToCart: function (product) {
             this.order.products.push(product.id);
         },
-        removeFromCart: function(product) {
+        removeFromCart: function (product) {
             const newCart = [];
 
             this.order.products.forEach((productId, index) => {
@@ -40,7 +42,7 @@ const webstore = new Vue({
 
             this.order.products = newCart;
         },
-        increaseProductQty: function(product) {
+        increaseProductQty: function (product) {
             if (product.inventory - this.cartProductCount(product.id) === 0) {
                 alert('Out of stock!');
                 return;
@@ -48,23 +50,56 @@ const webstore = new Vue({
 
             this.order.products.push(product.id);
         },
-        decreaseProductQty: function(product) {
+        decreaseProductQty: function (product) {
             if (this.cartProductCount(product.id) === 0) {
                 alert('Product is not in cart!');
                 return;
             }
-            
+
             this.order.products.splice(this.order.products.indexOf(product.id), 1);
         },
-        submitForm: function() {
-            alert('Form Submitted');
+        submitForm: async function () {
+            const response = await fetch(`${this.baseUrl}/${this.backendRoutes.placeOrder}`, {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(this.order)
+            });
+
+            if (!response.ok) {
+                console.log('error');
+            }
+
+            const responseData = await response.json();
+
+            console.log(responseData);
         },
-        cartProductCount: function(id) {
+        cartProductCount: function (id) {
             return this.order.products.filter(cartId => cartId === id).length;
+        },
+        loadProductList: async function () {
+            if (this.products.length == 0) {
+                const response = await fetch(`${this.baseUrl}/${this.backendRoutes.productList}`);
+
+                if (!response.ok) {
+                    console.log('error');
+                    return [];
+                }
+
+                const responseData = await response.json();
+
+                const newProducts = [];
+
+                responseData.forEach(product => {
+                    newProducts.push(getproductstructure(product));
+                });
+
+                this.products = newProducts;
+            }
         }
     },
     computed: {
         sortedProducts() {
+            if (this.products.length === 0) this.loadProductList();
             const productsArray = this.products.slice(0);
             function compare(a, b) {
                 if (a.price > b.price)
@@ -100,22 +135,12 @@ const webstore = new Vue({
             });
             return valid;
         }
-    }
+    },
 });
-
-const routes = ['browse', 'checkout'];
-
-window.onload = function() {
-    products.forEach(product => {
-        webstore.products.push(
-            getproductstructure(product)
-        );
-    });
-}
 
 function getproductstructure(dataObject) {
     return {
-        id: 0,
+        id: dataObject._id,
         picture: '',
         name: '',
         description: '',
