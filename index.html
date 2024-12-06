@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="site.css">
 
-    <title>Vue.js product Depot</title>
+    <title>After School Activities</title>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
     <script src="./app.js" defer></script>
@@ -16,13 +16,16 @@
 <body class="bg-gray-50">
     <div id="app">
         <header class="flex">
-            <h1 v-text="sitename" class="header-logo"></h1>
+            <div class="header-logo">
+                <img v-bind:src="sitelogo" v-bind:alt="sitename" class="h-4/5">
+            </div>
             <div class="filter">
-                <input v-model.trim="filter">
+                <input v-on:input="applyFilter">
             </div>
             <div class="actions">
                 <button v-show="currentPage === 'browse'" v-on:click="currentPage = 'checkout'"
-                    :disabled="order.products.length === 0">🛒 Checkout <span class="badge" v-show="order.products.length > 0">{{ order.products.length
+                    :disabled="order.products.length === 0">🛒 Checkout <span class="badge"
+                        v-show="order.products.length > 0">{{ order.products.length
                         }}</span></button>
                 <button v-show="currentPage === 'checkout'" v-on:click="currentPage = 'browse'">🌐 Browse</button>
             </div>
@@ -32,8 +35,7 @@
                 <div v-for="product in sortedProducts" :key="product.id"
                     class="flex gap-x-5 shadow-md hover:shadow-lg rounded-md bg-white">
                     <div class="w-40 flex-grow-0 flex-shrink-0">
-                        <img v-bind:src="product.picture" v-bind:alt="product.title"
-                            class="w-40 rounded-s-md h-full object-cover">
+                        <img v-bind:src="`images/${product.id}.png`" v-bind:alt="product.title" class="w-40 rounded-s-md h-full object-cover">
                     </div>
                     <div class="p-2">
                         <div class="relative inline-flex items-center gap-x-2">
@@ -49,7 +51,9 @@
                         <div v-text="product.description" class="text-gray-500 text-xs font-raleway"></div>
                         <div class="flex">
                             <span v-for="n in product.rating" class="text-amber-400">★</span>
-                            <span v-for="n in (5 -product.rating)">☆</span>
+                            <span v-if="product.rating < 5">
+                                <span v-for="n in (5 - product.rating)">☆</span>
+                            </span>
                         </div>
                         <div class="flex text-sm gap-x-1">
                             <div>AED {{ Number(product.price).toLocaleString() }}</div>
@@ -69,7 +73,7 @@
                     <div v-for="product in productsInCart" :key="product.id"
                         class="flex gap-x-5 shadow-md hover:shadow-lg rounded-md bg-white">
                         <div class="w-40 flex-grow-0 flex-shrink-0">
-                            <img v-bind:src="product.picture" v-bind:alt="product.title"
+                            <img v-bind:src="`images/${product.id}.png`" v-bind:alt="product.title"
                                 class="w-40 rounded-s-md h-full object-cover">
                         </div>
                         <div class="flex flex-col p-2 items-start justify-between">
@@ -84,8 +88,12 @@
                                     Number(product.price)).toLocaleString() }}</div>
                             </div>
                             <div class="flex">
-                                <button v-on:click="decreaseProductQty(product)" class="px-2 rounded-s bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300" :disabled="cartProductCount(product.id) === 1">-</button>
-                                <button v-on:click="increaseProductQty(product)" class="px-2 rounded-e bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300" :disabled="product.inventory - cartProductCount(product.id) === 0">+</button>
+                                <button v-on:click="decreaseProductQty(product)"
+                                    class="px-2 rounded-s bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300"
+                                    :disabled="cartProductCount(product.id) === 1">-</button>
+                                <button v-on:click="increaseProductQty(product)"
+                                    class="px-2 rounded-e bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300"
+                                    :disabled="product.inventory - cartProductCount(product.id) === 0">+</button>
                                 <button v-on:click="removeFromCart(product)"
                                     class="btn-danger-muted text-xs ml-2">Remove</button>
                             </div>

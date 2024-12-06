@@ -2,10 +2,12 @@ const webstore = new Vue({
     el: '#app',
     data: {
         baseUrl: 'http://localhost:3000',
-        backendRoutes: { productList: 'product', placeOrder: 'order' },
-        sitename: 'PetDepot',
+        backendRoutes: { productList: 'products', placeOrder: 'orders' },
+        sitename: 'After School Activities',
+        sitelogo: 'images/logo.png',
         currentPage: 'browse',
         filter: '',
+        loadedAfterFilter: false,
         products: [],
         order: {
             sendGift: 'Send As A Gift',
@@ -76,30 +78,36 @@ const webstore = new Vue({
         cartProductCount: function (id) {
             return this.order.products.filter(cartId => cartId === id).length;
         },
+        applyFilter: function (evt) {
+            this.filter = evt.target.value;
+            this.loadedAfterFilter = false;
+        },
         loadProductList: async function () {
-            if (this.products.length == 0) {
-                const response = await fetch(`${this.baseUrl}/${this.backendRoutes.productList}`);
+            const response = await fetch(`${this.baseUrl}/${this.backendRoutes.productList}/${this.filter}`);
 
-                if (!response.ok) {
-                    console.log('error');
-                    return [];
-                }
-
-                const responseData = await response.json();
-
-                const newProducts = [];
-
-                responseData.forEach(product => {
-                    newProducts.push(getproductstructure(product));
-                });
-
-                this.products = newProducts;
+            if (!response.ok) {
+                console.log('error');
+                return [];
             }
+
+            const responseData = await response.json();
+
+            const newProducts = [];
+
+            responseData.forEach(product => {
+                newProducts.push(getproductstructure(product));
+            });
+
+            this.products = newProducts;
         }
     },
     computed: {
         sortedProducts() {
-            if (this.products.length === 0) this.loadProductList();
+            if (!this.loadedAfterFilter) {
+                this.loadProductList();
+                this.loadedAfterFilter = true;
+            }
+
             const productsArray = this.products.slice(0);
             function compare(a, b) {
                 if (a.price > b.price)
@@ -141,7 +149,6 @@ const webstore = new Vue({
 function getproductstructure(dataObject) {
     return {
         id: dataObject._id,
-        picture: '',
         name: '',
         description: '',
         rating: 0,
