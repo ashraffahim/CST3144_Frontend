@@ -30,10 +30,10 @@
                 <button v-show="currentPage === 'checkout'" v-on:click="currentPage = 'browse'">🌐 Browse</button>
             </div>
         </header>
-        <div id="products" v-show="currentPage === 'browse'" class="flex justify-center flex-col">
-            <div class="flex items-center">
-                <label class="input-label-classic">State</label>
-                <select v-model="sort" class="input-classic">
+        <div id="products" v-show="currentPage === 'browse'" class="flex items-center flex-col">
+            <div class="flex items-center justify-end max-w-xl m-3">
+                <label class="input-label-classic scale-75">Sort </label>
+                <select v-model="sort" class="input-classic scale-75">
                     <option v-for="(name, code) in sorts" v-bind:value="code" :key="code">{{ name }}
                     </option>
                 </select>
