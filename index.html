@@ -40,11 +40,11 @@
                     <div class="p-2">
                         <div class="relative inline-flex items-center gap-x-2">
                             <h3 v-text="product.title" class="m-0 text-xl inline-block"></h3>
-                            <div v-if="(product.inventory - cartProductCount(product.id)) < 5"
+                            <div v-if="(product.place - cartProductCount(product.id)) < 5 && (product.place - cartProductCount(product.id)) > 0"
                                 class="text-red-600 inline-flex items-center">
                                 <span class="inline-block absolute bg-red-500 p-1 rounded-full animate-ping"></span>
                                 <span class="inline-block absolute bg-red-500 p-1 rounded-full"></span>
-                                <span class="text-xs ml-3">Only {{ product.inventory - cartProductCount(product.id) }}
+                                <span class="text-xs ml-3">Only {{ product.place - cartProductCount(product.id) }}
                                     left!</span>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="flex text-sm gap-x-1">
                             <div>AED {{ Number(product.price).toLocaleString() }}</div>
                         </div>
-                        <button v-if="(product.inventory - cartProductCount(product.id)) > 0"
+                        <button v-if="(product.place - cartProductCount(product.id)) > 0"
                             v-on:click="addToCart(product)"
                             class="bg-amber-300 rounded hover:shadow-md px-2 mt-2 text-sm">+ Cart</button>
                         <button v-else class="bg-gray-300 rounded px-2 mt-2 text-sm">Sold out</button>
@@ -93,7 +93,7 @@
                                     :disabled="cartProductCount(product.id) === 1">-</button>
                                 <button v-on:click="increaseProductQty(product)"
                                     class="px-2 rounded-e bg-gray-200 disabled:bg-gray-100 disabled:text-gray-300"
-                                    :disabled="product.inventory - cartProductCount(product.id) === 0">+</button>
+                                    :disabled="product.place - cartProductCount(product.id) === 0">+</button>
                                 <button v-on:click="removeFromCart(product)"
                                     class="btn-danger-muted text-xs ml-2">Remove</button>
                             </div>

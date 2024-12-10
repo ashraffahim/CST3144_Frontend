@@ -6,7 +6,7 @@ let products = [
         description: 'Un chat et un cheval',
         rating: 3,
         price: 8950.00,
-        inventory: 6,
+        place: 6,
     },
     {
         id: 1002,
@@ -15,7 +15,7 @@ let products = [
         description: 'A random fox',
         rating: 5,
         price: 999.00,
-        inventory: 3,
+        place: 3,
     },
     {
         id: 1003,
@@ -24,7 +24,7 @@ let products = [
         description: 'SUNYUM Cat Yarn Ball Toy with Bell, Rainbow Woolen Yarn Balls with Extended Tail Interactive Cat Exercise',
         rating: 4,
         price: 2.00,
-        inventory: 25,
+        place: 25,
     },
     {
         id: 1004,
@@ -33,7 +33,7 @@ let products = [
         description: 'Kit Cat Wild Caught Tuna with Mackerel Canned Cat Food (400g)',
         rating: 4,
         price: 2.00,
-        inventory: 30,
+        place: 30,
     },
     {
         id: 1005,
@@ -42,6 +42,6 @@ let products = [
         description: 'Meowgic Paws Cat Litter, Odor Control Clumping Bentonite Tofu Cat Litter, Low Tracking Lightweight',
         rating: 1,
         price: 20.00,
-        inventory: 50,
+        place: 50,
     }
 ];

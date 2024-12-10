@@ -45,7 +45,7 @@ const webstore = new Vue({
             this.order.products = newCart;
         },
         increaseProductQty: function (product) {
-            if (product.inventory - this.cartProductCount(product.id) === 0) {
+            if (product.place - this.cartProductCount(product.id) === 0) {
                 alert('Out of stock!');
                 return;
             }
@@ -153,7 +153,7 @@ function getproductstructure(dataObject) {
         description: '',
         rating: 0,
         price: 0,
-        inventory: 0,
+        place: 0,
         ...dataObject
     }
 };
