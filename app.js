@@ -7,6 +7,7 @@ const webstore = new Vue({
         sitelogo: 'images/logo.png',
         currentPage: 'browse',
         filter: '',
+        sort: 'sl',
         loadedAfterFilter: false,
         products: [],
         order: {
@@ -30,6 +31,16 @@ const webstore = new Vue({
             CA: 'California',
             NV: 'Nevada',
         },
+        sorts: {
+            'sl': 'Auto',
+            '-sl': 'Descending',
+            'title': 'Name',
+            '-title': 'Name descending',
+            'price': 'Price',
+            '-price': 'Price descending',
+            'place': 'Place',
+            '-place': 'Place descending'
+        }
     },
     methods: {
         addToCart: function (product) {
@@ -109,10 +120,31 @@ const webstore = new Vue({
             }
 
             const productsArray = this.products.slice(0);
+
+            let attr, progresssion;
+
+            if (this.sort[0] === '-') {
+                attr = this.sort.substr(1);
+                progresssion = 1;
+            } else {
+                attr = this.sort;
+                progresssion = 2;
+            }
+
             function compare(a, b) {
-                if (a.price > b.price)
+                let attrA, attrB;
+                
+                if (progresssion === 1) {
+                    attrA = a[attr];
+                    attrB = b[attr];
+                } else {
+                    attrA = b[attr];
+                    attrB = a[attr];
+                }
+
+                if (attrA > attrB)
                     return 1;
-                else if (a.price < b.price)
+                else if (attrA < attrB)
                     return -1;
                 return 0;
             }

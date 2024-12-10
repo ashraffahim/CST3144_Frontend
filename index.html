@@ -30,12 +30,20 @@
                 <button v-show="currentPage === 'checkout'" v-on:click="currentPage = 'browse'">🌐 Browse</button>
             </div>
         </header>
-        <div id="products" v-show="currentPage === 'browse'" class="flex justify-center">
+        <div id="products" v-show="currentPage === 'browse'" class="flex justify-center flex-col">
+            <div class="flex items-center">
+                <label class="input-label-classic">State</label>
+                <select v-model="sort" class="input-classic">
+                    <option v-for="(name, code) in sorts" v-bind:value="code" :key="code">{{ name }}
+                    </option>
+                </select>
+            </div>
             <div class="max-w-xl flex flex-col gap-y-6 my-5">
                 <div v-for="product in sortedProducts" :key="product.id"
                     class="flex gap-x-5 shadow-md hover:shadow-lg rounded-md bg-white">
                     <div class="w-40 flex-grow-0 flex-shrink-0">
-                        <img v-bind:src="`images/${product.id}.png`" v-bind:alt="product.title" class="w-40 rounded-s-md h-full object-cover">
+                        <img v-bind:src="`images/${product.id}.png`" v-bind:alt="product.title"
+                            class="w-40 rounded-s-md h-full object-cover">
                     </div>
                     <div class="p-2">
                         <div class="relative inline-flex items-center gap-x-2">
