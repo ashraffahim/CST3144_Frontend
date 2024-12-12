@@ -1,13 +1,13 @@
 const webstore = new Vue({
     el: '#app',
     data: {
-        baseUrl: 'http://localhost:3000',
+        baseUrl: 'https://cst3144-backend-bge9.onrender.com',
         backendRoutes: { productList: 'products', placeOrder: 'orders' },
         sitename: 'After School Activities',
         sitelogo: 'images/logo.png',
         currentPage: 'browse',
         filter: '',
-        sort: 'sl',
+        sort: '',
         loadedAfterFilter: false,
         products: [],
         order: {
@@ -32,8 +32,6 @@ const webstore = new Vue({
             NV: 'Nevada',
         },
         sorts: {
-            'sl': 'Auto',
-            '-sl': 'Descending',
             'title': 'Name',
             '-title': 'Name descending',
             'price': 'Price',
@@ -125,15 +123,15 @@ const webstore = new Vue({
 
             if (this.sort[0] === '-') {
                 attr = this.sort.substr(1);
-                progresssion = 1;
+                progresssion = 2;
             } else {
                 attr = this.sort;
-                progresssion = 2;
+                progresssion = 1;
             }
 
             function compare(a, b) {
                 let attrA, attrB;
-                
+
                 if (progresssion === 1) {
                     attrA = a[attr];
                     attrB = b[attr];
