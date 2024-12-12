@@ -1,0 +1,8 @@
+*
+
+!.gitignore
+!index.html
+!app.js
+!products.js
+!site.css
+!images/*
