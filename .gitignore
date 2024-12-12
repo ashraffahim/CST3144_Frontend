@@ -1,8 +1,4 @@
-*
-
-!.gitignore
-!index.html
-!app.js
-!products.js
-!site.css
-!images/*
+node_modules/
+tailwindcss/
+tailwind.config.js
+*.json
